@@ -18,7 +18,6 @@ int main(int argc, char *argv[]) {
         return -1;
 
     if(cmdArgs->verbose == True) {
-        printf(HEADER);
         printCommandlineArguments(cmdArgs);
     }
 
