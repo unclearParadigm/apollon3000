@@ -1,0 +1,7 @@
+# GCC Build-Artifacts
+build/
+
+# Annoying IDE-Stuff
+.code/
+.idea/
+.vscode/
