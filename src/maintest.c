@@ -1,5 +1,3 @@
-
-#include <unistd.h> 
 #include <sys/socket.h> 
 #include <stdlib.h> 
 #include <netinet/in.h> 
@@ -8,9 +6,10 @@
 #include <unistd.h>
 #include <stdio.h>
 
+#include "constants.h"
 #include "boolean.h"
 #include "cmdargs/cmdargs.h"
-#include "constants.h"
+#include "hal/hal.h"
 
 int main(int argc, char *argv[]) {
     CommandlineArguments *cmdArgs = malloc(sizeof(CommandlineArguments));
