@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
     /* Initialize HAL (=Hardware Abstraction Layer) */
     initializeHal(pinConfig);
 
-
+    /* Handle commands by CLI */
     handleCommandlineArguments(cmdArgs);
 
     printf("Goodbye!");
@@ -44,6 +44,7 @@ void handleCommandlineArguments(CommandlineArguments *cmdArgs) {
     }
 
     if(cmdArgs->blinkInterval > 0 && cmdArgs->sweepActivated == False) {
+        /* Simple Blinking, only on and off */
         handleSimpleBlink(cmdArgs);
         return;
     }
@@ -72,7 +73,7 @@ void handleBlinkWithSweep(CommandlineArguments *cmdArgs) {
     struct timespec sleepDelay = {0};
     sleepDelay.tv_sec = 0;
     sleepDelay.tv_nsec = cmdArgs->blinkInterval * 10000L;
-    
+
     while(1) {
         for(int i = DIGITAL_OFF; i <= DIGITAL_ON; i++) {
             if(cmdArgs->enableRed) setPin(REDPIN, i);
