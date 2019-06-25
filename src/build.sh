@@ -28,10 +28,10 @@ echo "FILES TO BUILD: $buildfiles"
 
 if [ "$platform" = "x86_64" ]; then
   # Plain Desktop Build
-  gcc $buildfiles maintest.c -DBUILD_DESKTOP -lpthread -Wall --pedantic -o "$outputdirectory/apollon3000"
+  gcc $buildfiles maincli.c -DBUILD_DESKTOP -lpthread -Wall --pedantic -o "$outputdirectory/apollon3000"
 fi
 
 if [ "$platform" = "armhf" ] || [ "$platform" = "armv6" ] || [ "$platform" = "armv7" ]; then
   # Raspberry PI Build
-  gcc $buildfiles maintest.c -DRASPBERRY -lwiringPi -lpthread -Wall --pedantic -o "$outputdirectory/apollon3000"
+  gcc $buildfiles maincli.c -DBUILD_RASPBERRY -lwiringPi -lpthread -Wall --pedantic -o "$outputdirectory/apollon3000"
 fi
