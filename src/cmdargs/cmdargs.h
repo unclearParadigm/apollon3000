@@ -4,15 +4,15 @@
 #define CMDARGS_H_
 
 struct CommandlineArguments {
-    bool        enableRed;
-    bool        enableBlue;
-    bool        enableGreen;
+    bool            enableRed;
+    bool            enableBlue;
+    bool            enableGreen;
 
-    bool        sweepActivated;
-    int         intensity;
-    int         blinkInterval;
+    bool            sweepActivated;
+    int             intensity;
+    int             blinkInterval;
 
-    bool        verbose;
+    bool            verbose;
 };
 
 typedef struct CommandlineArguments CommandlineArguments;

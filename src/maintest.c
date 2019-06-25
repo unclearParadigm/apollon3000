@@ -1,3 +1,4 @@
+#include <time.h>
 #include <stdio.h>
 #include <stdlib.h> 
 #include <unistd.h>
@@ -8,6 +9,7 @@
 #include "hal/hal.h"
 
 void handleSimpleBlink(CommandlineArguments *cmdArgs);
+void handleBlinkWithSweep(CommandlineArguments *cmdArgs);
 void handleCommandlineArguments(CommandlineArguments *cmdArgs);
 
 int main(int argc, char *argv[]) {
@@ -24,7 +26,8 @@ int main(int argc, char *argv[]) {
 
     /* Initialize HAL (=Hardware Abstraction Layer) */
     initializeHal(pinConfig);
-    
+
+
     handleCommandlineArguments(cmdArgs);
 
     printf("Goodbye!");
@@ -40,16 +43,49 @@ void handleCommandlineArguments(CommandlineArguments *cmdArgs) {
         return;
     }
 
-    handleSimpleBlink(cmdArgs);
+    if(cmdArgs->blinkInterval > 0 && cmdArgs->sweepActivated == False) {
+        handleSimpleBlink(cmdArgs);
+        return;
+    }
+
+    handleBlinkWithSweep(cmdArgs);
 }
 
 void handleSimpleBlink(CommandlineArguments *cmdArgs) {
+    // ____|****|____|****|____|****|____
+    // blinkIntervalSeconds off / low
+    // blinkIntervalSeconds on / high
+
+    struct timespec sleepDelay = {0};
+    sleepDelay.tv_sec = 0;
+    sleepDelay.tv_nsec = cmdArgs->blinkInterval * 1000000L;
+
     while(1) {
         if(cmdArgs->enableRed) togglePin(REDPIN);
         if(cmdArgs->enableBlue) togglePin(BLUEPIN);
         if(cmdArgs->enableGreen) togglePin(GREENPIN);
-        sleep(cmdArgs->blinkInterval);
+        nanosleep(&sleepDelay, (struct timespec *)NULL);
     }
 }
 
+void handleBlinkWithSweep(CommandlineArguments *cmdArgs) {
+    struct timespec sleepDelay = {0};
+    sleepDelay.tv_sec = 0;
+    sleepDelay.tv_nsec = cmdArgs->blinkInterval * 10000L;
+    
+    while(1) {
+        for(int i = DIGITAL_OFF; i <= DIGITAL_ON; i++) {
+            if(cmdArgs->enableRed) setPin(REDPIN, i);
+            if(cmdArgs->enableBlue) setPin(BLUEPIN, i);
+            if(cmdArgs->enableGreen) setPin(GREENPIN, i);
+            nanosleep(&sleepDelay, (struct timespec *)NULL);
+        }
 
+        for(int i = DIGITAL_ON; i >= DIGITAL_OFF; i--) {
+            if(cmdArgs->enableRed) setPin(REDPIN, i);
+            if(cmdArgs->enableBlue) setPin(BLUEPIN, i);
+            if(cmdArgs->enableGreen) setPin(GREENPIN, i);
+            nanosleep(&sleepDelay, (struct timespec *)NULL);
+        }
+    }
+}
