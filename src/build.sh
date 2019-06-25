@@ -15,7 +15,7 @@ echo ""
 mkdir -p $outputdirectory
 
 declare -a FILES
-FILES=( boolean.h constants.h cmdargs/cmdargs.h cmdargs/cmdargs.c hal/hal.h )
+FILES=( boolean.h constants.h cmdargs/cmdargs.h cmdargs/cmdargs.c hal/hal.h hal/desktop.c hal/raspberry.c )
 
 function filejoin { 
   local IFS="$1"; 
@@ -28,10 +28,10 @@ echo "FILES TO BUILD: $buildfiles"
 
 if [ "$platform" = "x86_64" ]; then
   # Plain Desktop Build
-  gcc $buildfiles hal/desktop.c maintest.c -DBUILD_DESKTOP -lpthread -Wall --pedantic -o "$outputdirectory/apollon3000"
+  gcc $buildfiles maintest.c -DBUILD_DESKTOP -lpthread -Wall --pedantic -o "$outputdirectory/apollon3000"
 fi
 
 if [ "$platform" = "armhf" ] || [ "$platform" = "armv6" ] || [ "$platform" = "armv7" ]; then
   # Raspberry PI Build
-  gcc $buildfiles hal/raspberry.c maintest.c -DRASPBERRY -lwiringPi -lpthread -Wall --pedantic -o "$outputdirectory/apollon3000"
+  gcc $buildfiles maintest.c -DRASPBERRY -lwiringPi -lpthread -Wall --pedantic -o "$outputdirectory/apollon3000"
 fi
