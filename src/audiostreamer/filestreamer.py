@@ -21,15 +21,15 @@ if __name__ == '__main__':
 
     audio_maxval = 20000
 
-    host_ip =  "127.0.0.1"
-    server_port = 8080
+    host =  "127.0.0.1"
+    port = 8080
 
     # Initialize a TCP client socket using SOCK_STREAM
     tcp_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     try:
 
-        tcp_client.connect((host_ip, server_port))
+        tcp_client.connect((host, port))
 
         with open(argv[1], 'rb') as f:
             # The period size controls the internal number of frames per period.
@@ -41,7 +41,7 @@ if __name__ == '__main__':
             while data:
                 out.write(data)
                 data = f.read(320)
-                y = str(int((100 * int(audioop.max(data, 2))) / audio_maxval) + "\n"
+                y = str(int(100 * audioop.max(data, 2) / audio_maxval)) + "\n"
                 tcp_client.send(y.encode())
 
     except Exception as exc:
