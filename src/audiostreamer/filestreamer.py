@@ -41,8 +41,8 @@ if __name__ == '__main__':
             while data:
                 out.write(data)
                 data = f.read(320)
-                y = int((100 * int(audioop.max(data, 2))) / audio_maxval)
-                tcp_client.send(bytes(y))
+                y = str(int((100 * int(audioop.max(data, 2))) / audio_maxval) + "\n"
+                tcp_client.send(y.encode())
 
     except Exception as exc:
         print(exc)

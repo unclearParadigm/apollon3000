@@ -26,8 +26,8 @@ try:
     while True:
         len, data = input.read()
         if len > 0:
-            y = int((100 * int(audioop.max(data, 2))) / audio_maxval)
-            tcp_client.sendall(bytes(y))
+            y = str(int((100 * int(audioop.max(data, 2))) / audio_maxval)) + "\n"
+            tcp_client.send(y.encode())
 
 finally:
     tcp_client.close()
