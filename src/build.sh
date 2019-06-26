@@ -17,25 +17,40 @@ mkdir -p $outputdirectory
 declare -a FILES
 FILES=( boolean.h constants.h cmdargs/cmdargs.h cmdargs/cmdargs.c hal/hal.h hal/desktop.c hal/raspberry.c )
 
+declare -a FLAGS
+FLAGS=( -Wall --pedantic -std=gnu99 )
+
 function filejoin { 
   local IFS="$1"; 
   shift; 
   buildfiles="$*";
 }
 
+function flagjoin { 
+  local IFS="$1"; 
+  shift; 
+  buildflags="$*";
+}
+
 filejoin " " "${FILES[@]}"
-echo "FILES TO BUILD: $buildfiles"
+echo "Files: $buildfiles"
+flagjoin " " "${FLAGS[@]}"
+echo "Flags: $buildflags"
 
 if [ "$platform" = "x86_64" ]; then
   # / Desktop Build for CLI
-  gcc $buildfiles maincli.c -DBUILD_DESKTOP -std=gnu99 -lpthread -Wall --pedantic -o "$outputdirectory/apollon3000"
+  gcc $buildfiles maincli.c $buildflags -DBUILD_DESKTOP -lpthread -o "$outputdirectory/apollon3000"
   # / Desktop Build for Remote Control
-  gcc $buildfiles rcmain.c -DBUILD_DESKTOP -std=gnu99 -lpthread -Wall --pedantic -o "$outputdirectory/apollon3000rc"
+  gcc $buildfiles rcmain.c $buildflags -DBUILD_DESKTOP -lpthread -o "$outputdirectory/apollon3000rc"
 fi
 
 if [ "$platform" = "armhf" ] || [ "$platform" = "armv6" ] || [ "$platform" = "armv7" ]; then
   # / RaspberryPI Build for CLI
-  gcc $buildfiles maincli.c -DBUILD_RASPBERRY -std=gnu99 -lwiringPi -lpthread -Wall --pedantic -o "$outputdirectory/apollon3000"
+  gcc $buildfiles maincli.c $buildflags -DBUILD_RASPBERRY -lwiringPi -lpthread -o "$outputdirectory/apollon3000"
   # / RaspberryPI Build for Remote Control
-  gcc $buildfiles rcmain.c -DBUILD_RASPBERRY -std=gnu99 -lpthread -Wall --pedantic -o "$outputdirectory/apollon3000rc"
+  gcc $buildfiles rcmain.c $buildflags -DBUILD_RASPBERRY -lpthread -o "$outputdirectory/apollon3000rc"
 fi
+
+echo ""
+echo "Build Completed!"
+echo "=============================================="
