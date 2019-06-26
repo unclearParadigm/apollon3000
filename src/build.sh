@@ -27,11 +27,15 @@ filejoin " " "${FILES[@]}"
 echo "FILES TO BUILD: $buildfiles"
 
 if [ "$platform" = "x86_64" ]; then
-  # Plain Desktop Build
+  # / Desktop Build for CLI
   gcc $buildfiles maincli.c -DBUILD_DESKTOP -lpthread -Wall --pedantic -o "$outputdirectory/apollon3000"
+  # / Desktop Build fo Remote Control
+  gcc $buildfiles rcmain.c -DBUILD_DESKTOP -lpthread -Wall --pedantic -o "$outputdirectory/apollon3000rc"
 fi
 
 if [ "$platform" = "armhf" ] || [ "$platform" = "armv6" ] || [ "$platform" = "armv7" ]; then
-  # Raspberry PI Build
+  # / RaspberryPI Build for CLI
   gcc $buildfiles maincli.c -DBUILD_RASPBERRY -lwiringPi -lpthread -Wall --pedantic -o "$outputdirectory/apollon3000"
+  # / RaspberryPI Build fo Remote Control
+  gcc $buildfiles rcmain.c -DBUILD_RASPBERRY -lpthread -Wall --pedantic -o "$outputdirectory/apollon3000rc"
 fi
