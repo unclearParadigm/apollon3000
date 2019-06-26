@@ -28,14 +28,14 @@ echo "FILES TO BUILD: $buildfiles"
 
 if [ "$platform" = "x86_64" ]; then
   # / Desktop Build for CLI
-  gcc $buildfiles maincli.c -DBUILD_DESKTOP -lpthread -Wall --pedantic -o "$outputdirectory/apollon3000"
-  # / Desktop Build fo Remote Control
-  gcc $buildfiles rcmain.c -DBUILD_DESKTOP -lpthread -Wall --pedantic -o "$outputdirectory/apollon3000rc"
+  gcc $buildfiles maincli.c -DBUILD_DESKTOP -std=c99 -lpthread -Wall --pedantic -o "$outputdirectory/apollon3000"
+  # / Desktop Build for Remote Control
+  gcc $buildfiles rcmain.c -DBUILD_DESKTOP -std=c99 -lpthread -Wall --pedantic -o "$outputdirectory/apollon3000rc"
 fi
 
 if [ "$platform" = "armhf" ] || [ "$platform" = "armv6" ] || [ "$platform" = "armv7" ]; then
   # / RaspberryPI Build for CLI
-  gcc $buildfiles maincli.c -DBUILD_RASPBERRY -lwiringPi -lpthread -Wall --pedantic -o "$outputdirectory/apollon3000"
-  # / RaspberryPI Build fo Remote Control
-  gcc $buildfiles rcmain.c -DBUILD_RASPBERRY -lpthread -Wall --pedantic -o "$outputdirectory/apollon3000rc"
+  gcc $buildfiles maincli.c -DBUILD_RASPBERRY -std=c99 -lwiringPi -lpthread -Wall --pedantic -o "$outputdirectory/apollon3000"
+  # / RaspberryPI Build for Remote Control
+  gcc $buildfiles rcmain.c -DBUILD_RASPBERRY -std=c99 -lpthread -Wall --pedantic -o "$outputdirectory/apollon3000rc"
 fi

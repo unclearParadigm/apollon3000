@@ -1,3 +1,5 @@
+#define _POSIX_C_SOURCE 199309L /* shall be >= 199309L */
+
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h> 
@@ -57,9 +59,11 @@ void handleSimpleBlink(CommandlineArguments *cmdArgs) {
     // blinkIntervalSeconds off / low
     // blinkIntervalSeconds on / high
 
+    long totalSeconds = cmdArgs->blinkInterval / 1000;
+    long totalMilliSeconds = (cmdArgs->blinkInterval - (totalSeconds * 1000));
     struct timespec sleepDelay = {0};
-    sleepDelay.tv_sec = 0;
-    sleepDelay.tv_nsec = cmdArgs->blinkInterval * 1000000L;
+    sleepDelay.tv_sec = totalSeconds;
+    sleepDelay.tv_nsec = totalMilliSeconds * 1000000;
 
     while(1) {
         if(cmdArgs->enableRed) togglePin(REDPIN);
@@ -71,8 +75,10 @@ void handleSimpleBlink(CommandlineArguments *cmdArgs) {
 
 void handleBlinkWithSweep(CommandlineArguments *cmdArgs) {
     struct timespec sleepDelay = {0};
-    sleepDelay.tv_sec = 0;
-    sleepDelay.tv_nsec = cmdArgs->blinkInterval * 10000L;
+    long totalSeconds = cmdArgs->blinkInterval / 100000;
+    long totalMilliSeconds = (cmdArgs->blinkInterval - (totalSeconds * 1000));
+    sleepDelay.tv_sec = totalSeconds;
+    sleepDelay.tv_nsec = totalMilliSeconds * 10000L;
 
     while(1) {
         for(int i = DIGITAL_OFF; i <= DIGITAL_ON; i++) {
