@@ -1,3 +1,6 @@
+#include <stdio.h>
+
+#include "../boolean.h"
 #include "hal.h"
 
 #ifdef BUILD_RASPBERRY
@@ -16,6 +19,9 @@ void initializeHal(PinConfiguration *pinConfiguration) {
     softPwmCreate(GLOBALPINCONFIG->redPin, 0, 100);
     softPwmCreate(GLOBALPINCONFIG->bluePin, 0, 100);
     softPwmCreate(GLOBALPINCONFIG->greenPin, 0, 100);
+    if (wiringPiSetup() == -1) {
+        printf("Initialization of wiringPi failed!");
+    }
 }
 
 int getPin(int pinNumber) {
