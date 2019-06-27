@@ -1,52 +1,36 @@
-import sys
-import time
+from __future__ import print_function
+
 import socket
-
-from sys import argv
-
 import audioop
 import alsaaudio
 
-def usage():
-    print('usage: playbacktest.py [-d <device>] <file>', file=sys.stderr)
-    sys.exit(2)
+host = "127.0.0.1"
+port = 8080
+audio_max_amplitude = 20000
 
-if __name__ == '__main__':
-    device = 'default'
+# Initialize ALSA-Audio-Output
+audio_output = alsaaudio.PCM(alsaaudio.PCM_PLAYBACK)
+audio_output.setchannels(1)
+audio_output.setrate(44100)
+audio_output.setformat(alsaaudio.PCM_FORMAT_S32_LE)
 
-    out = alsaaudio.PCM(alsaaudio.PCM_PLAYBACK, device=device)
-    out.setchannels(1)
-    out.setrate(44100)
-    out.setformat(alsaaudio.PCM_FORMAT_S32_LE)
-
-    audio_maxval = 20000
-
-    host =  "127.0.0.1"
-    port = 8080
-
-    # Initialize a TCP client socket using SOCK_STREAM
-    tcp_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
+# Initialize TCP client socket using SOCK_STREAM
+tcp_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+with open('hth.wav', 'rb') as wav_file:
     try:
-
         tcp_client.connect((host, port))
 
-        with open(argv[1], 'rb') as f:
-            # The period size controls the internal number of frames per period.
-            # The significance of this parameter is documented in the ALSA api.
-            out.setperiodsize(160)
+        audio_output.setperiodsize(160)
+        data = wav_file.read(320)
 
-            # Read data from stdin
-            data = f.read(320)
-            while data:
-                out.write(data)
-                data = f.read(320)
-                y = str(int(100 * audioop.max(data, 2) / audio_maxval)) + "\n"
-                tcp_client.send(y.encode())
+        while data:
+            # Write read bits of Audio-File to Sound-Card
+            audio_output.write(data)
+            data = wav_file.read(320)
+            led_intensity = str(int(100 * audioop.max(data, 2) / audio_max_amplitude)) + "\n"
+            tcp_client.send(led_intensity.encode())
 
     except Exception as exc:
         print(exc)
     finally:
         tcp_client.close()
-            
-        
