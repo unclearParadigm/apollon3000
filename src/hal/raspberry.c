@@ -16,12 +16,14 @@ PinConfiguration *GLOBALPINCONFIG;
 
 void initializeHal(PinConfiguration *pinConfiguration) {
     GLOBALPINCONFIG = pinConfiguration; /* Set pinConfiguration globally */
-    softPwmCreate(GLOBALPINCONFIG->redPin, 0, 100);
-    softPwmCreate(GLOBALPINCONFIG->bluePin, 0, 100);
-    softPwmCreate(GLOBALPINCONFIG->greenPin, 0, 100);
+
     if (wiringPiSetup() == -1) {
         printf("Initialization of wiringPi failed!");
     }
+
+    softPwmCreate(GLOBALPINCONFIG->redPin, 0, 100);
+    softPwmCreate(GLOBALPINCONFIG->bluePin, 0, 100);
+    softPwmCreate(GLOBALPINCONFIG->greenPin, 0, 100);
 }
 
 int getPin(int pinNumber) {
