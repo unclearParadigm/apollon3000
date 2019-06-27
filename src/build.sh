@@ -44,11 +44,11 @@ if [ "$platform" = "x86_64" ]; then
   gcc $buildfiles rcmain.c $buildflags -DBUILD_DESKTOP -lpthread -o "$outputdirectory/apollon3000rc"
 fi
 
-if [ "$platform" = "armhf" ] || [ "$platform" = "armv6" ] || [ "$platform" = "armv7" ]; then
+if [ "$platform" = "armhf" ] || [ "$platform" = "armv6" ] || [ "$platform" = "armv7" ] || [ "$platform" = "unknown" ]; then
   # / RaspberryPI Build for CLI
   gcc $buildfiles maincli.c $buildflags -DBUILD_RASPBERRY -lwiringPi -lpthread -o "$outputdirectory/apollon3000"
   # / RaspberryPI Build for Remote Control
-  gcc $buildfiles rcmain.c $buildflags -DBUILD_RASPBERRY -lpthread -o "$outputdirectory/apollon3000rc"
+  gcc $buildfiles rcmain.c $buildflags -DBUILD_RASPBERRY -lwiringPi -lpthread -o "$outputdirectory/apollon3000rc"
 fi
 
 echo ""
