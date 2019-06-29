@@ -83,6 +83,8 @@ void startListeningForCommands() {
 
         int pinValue = atoi(buffer);
         setPin(REDPIN, pinValue);
+        setPin(BLUEPIN, pinValue);
+        setPin(GREENPIN, pinValue);
     }
 
     close(client_fd);
