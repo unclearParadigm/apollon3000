@@ -1,5 +1,5 @@
 platform=$(eval uname -i)
-outputdirectory="../build/$platform"
+outputdirectory="../../build/$platform"
 
 clear
 echo "=============================================="
