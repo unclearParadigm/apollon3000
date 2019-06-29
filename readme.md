@@ -1,27 +1,18 @@
-# Apollon3000
+# Apollon 3000
 
-### Setup Rasbperry PI initially
+is a RaspberryPI-Project controlling LEDs in various ways. For now there are features implemented to visualize Music
+or just use static-patterns. Apollon3000 was developed as a final project for the lecture "Systemnahe Programmierung" at FH-Joanneum.
 
-##### TeamViewer
+# Parts of Apollon3000
+* [Commandline Interface](docs/apollon3000.md)
+* [Remote-Control](docs/apollon3000rc.md)
 
-* Download TeamViewer from official Site
-```bash
-sudo dpkg -i teamviewer.deb
-sudo apt install --fix-broken
-sudo dpkg -i teamviewer.de
-```
+# Features
+* visualize any *.wav-file (streamed via Network)
+* visualize microphone-recordings (in realtime, via Network)
+* static LED-Operations via CLI (on, off, dimmed)
+* LED-Programs like Blink and Sweep
 
-
-###### Install additional Tooling
-```bash
-sudo apt install git htop curl nano
-```
-
-* SSH is preinstalled already
-
-
-###### Install Libraries for interacting with GPIOs
-```bash
-git clone git://git.drogon.net/wiringPi
-./wiringPi/build
-```
+# Developers:
+* Sarcevic Lejla
+* Rehberger Raffael
